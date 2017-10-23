@@ -31,6 +31,15 @@
   },
   "homepage": "https://github.com/billmalarky/react-native-image-cache-hoc#readme",
   "devDependencies": {
-    "jest": "^21.2.1"
+    "jest": "^21.2.1",
+    "react-test-renderer": "^16.0.0",
+    "should": "^13.1.2"
+  },
+  "jest": {
+    "preset": "react-native"
+  },
+  "dependencies": {
+    "react": "^16.0.0",
+    "react-native": "^0.49.3"
   }
 }

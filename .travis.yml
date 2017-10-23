@@ -1,0 +1,14 @@
+
+#
+# Travis CI config
+# https://docs.travis-ci.com/user/customizing-the-build/
+#
+
+language: node_js
+
+node_js:
+  - "7"
+
+cache:
+  directories:
+    - "node_modules"
