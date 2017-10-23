@@ -1,0 +1,36 @@
+{
+  "name": "react-native-image-cache-hoc",
+  "version": "1.0.0",
+  "description": "React Native Higher Order Component that adds advanced caching functionality to the react native Image component.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/billmalarky/react-native-image-cache-hoc.git"
+  },
+  "keywords": [
+    "react",
+    "native",
+    "higher",
+    "order",
+    "component",
+    "hoc",
+    "image",
+    "caching",
+    "image",
+    "component",
+    "media",
+    "caching"
+  ],
+  "author": "Reid Mayo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/billmalarky/react-native-image-cache-hoc/issues"
+  },
+  "homepage": "https://github.com/billmalarky/react-native-image-cache-hoc#readme",
+  "devDependencies": {
+    "jest": "^21.2.1"
+  }
+}
