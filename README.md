@@ -5,3 +5,14 @@
 
 React Native Higher Order Component that adds advanced caching functionality to the react native Image component.
 
+## Installation
+
+```bash
+$ npm install --save react-native-image-cache-hoc
+```
+
+Or
+
+```bash
+$ yarn add react-native-image-cache-hoc
+```
