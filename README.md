@@ -23,13 +23,24 @@ Or
 $ yarn add react-native-image-cache-hoc
 ```
 
-Then, because this package has a depedency on [react-native-fetch-blob](https://github.com/wkh237/react-native-fetch-blob) you will need to link native packages by simply running:
+Then, because this package has a depedency on [react-native-fetch-blob](https://github.com/wkh237/react-native-fetch-blob) you will need to link this native package by running:
 
 ```bash
-$ react-native link
+$ react-native link react-native-fetch-blob
 ```
 
-To troubleshoot native package linking, refer to [the react-native-fetch-blob installation instructions](https://github.com/wkh237/react-native-fetch-blob#user-content-installation).
+Linking react-native-fetch-blob **should only be done once**, reinstalling node_modules with npm or yarn does not require running the above command again.
+
+To troubleshoot linking, refer to [the react-native-fetch-blob installation instructions](https://github.com/wkh237/react-native-fetch-blob#user-content-installation).
 
 ## Usage
 
+TODO
+
+## Warning
+
+iOS only allows requests to https urls. If you need to load image files using http you will need to make additional react native config changes.
+
+> By default, iOS will block any request that's not encrypted using SSL. If you need to fetch from a cleartext URL (one that begins with http) you will first need to add an App Transport Security exception. If you know ahead of time what domains you will need access to, it is more secure to add exceptions just for those domains; if the domains are not known until runtime you can disable ATS completely. Note however that from January 2017, Apple's App Store review will require reasonable justification for disabling ATS.
+
+https://facebook.github.io/react-native/docs/network.html

@@ -1,6 +1,10 @@
 
+// Define globals for eslint.
+/* global describe it */
+/* global expect */
+
 // Load dependencies
-import should from 'should';
+import should from 'should'; // eslint-disable-line no-unused-vars
 import React from 'react';
 import 'react-native';
 import { View, Text } from 'react-native';
