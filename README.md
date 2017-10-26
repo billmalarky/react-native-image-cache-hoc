@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/billmalarky/react-native-image-cache-hoc.svg?branch=master)](https://travis-ci.org/billmalarky/react-native-image-cache-hoc)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/billmalarky/react-native-image-cache-hoc/blob/master/LICENSE)
+[![ESLint](https://img.shields.io/badge/eslint-ok-green.svg)](https://github.com/billmalarky/react-native-image-cache-hoc/blob/master/.eslintrc.js)
 
 React Native Higher Order Component that adds advanced caching functionality to the react native Image component.
 
@@ -35,7 +36,92 @@ To troubleshoot linking, refer to [the react-native-fetch-blob installation inst
 
 ## Usage
 
-TODO
+React Native Image Cache HOC creates an advanced image component, \<CacheableImage\>, that is a drop in replacement for the standard \<Image\> component. 
+
+The only change in the advanced component API is the component "source" prop only accepts a web accessible url (there's no reason to use this library to render files that already exist on the local filesystem). Additionally there is a new, optional, prop "permanent" that determines if the image file should be stored forever on the local filesystem instead of written to a temperary cache. Typically "permanent" images would be static files that would traditionally ship with with app itself.
+
+**TL;DR: To cache image files for performance, simply use \<CacheableImage\> as a drop in replacement for \<Image\>. To store files permanently add a permanent={true} prop to \<CacheableImage\>.**
+
+```js
+
+import React, { Component } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image
+} from 'react-native';
+
+import imageCacheHoc from 'react-native-image-cache-hoc';
+
+/**
+* Pass the native <Image> component into imageCacheHoc() to create the advanced image component <CacheableImage>.
+* 
+* imageCacheHoc() takes an options object as the second parameter (refer to options section of README.md)
+*/
+const CacheableImage = imageCacheHoc(Image, {
+  fileHostWhitelist: ['i.redd.it']
+});
+
+export default class App extends Component<{}> {
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.welcome}>Welcome to React Native!</Text>
+        <CacheableImage style={styles.image} source={{uri: 'https://i.redd.it/rc29s4bz61uz.png'}} permanent={false} />
+      </View>
+  );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  image: {
+    width:150,
+    height: 204
+  }
+});
+
+```
+
+## Options
+
+React Native Image Cache HOC accepts an options object in order to tweak standard functionality.
+
+```js
+imageCacheHoc(Image, {
+  
+  // Allow http urls. 
+  // Defaults to https only.
+  validProtocols: ['http', 'https'],
+  
+  // Use domain host whitelist. 
+  // Defaults to allowing urls from all domain hosts.
+  fileHostWhitelist: ['localhost', 'i.redd.it'],
+  
+  // Namespace the directory that stores files to avoid collisions with other app libraries. 
+  // Defaults to 'react-native-image-cache-hoc'.
+  fileDirName: 'example-app-files-namespace',
+  
+  // Max size of file cache in bytes before pruning occurs. 
+  // Note that cache size can exceed this limit, 
+  // but sequential writes to the cache will trigger cache pruning 
+  // which will delete cached files until total cache size is below this limit before writing.
+  // Defaults to 15 MB.
+  cachePruneTriggerLimit: 1024 * 1024 * 10
+  
+});
+````
 
 ## Warning
 
