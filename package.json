@@ -4,7 +4,7 @@
   "description": "React Native Higher Order Component that adds advanced caching functionality to the react native Image component.",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "./node_modules/.bin/jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "lint": "eslint ."
   },
   "repository": {
@@ -33,6 +33,7 @@
   "homepage": "https://github.com/billmalarky/react-native-image-cache-hoc#readme",
   "devDependencies": {
     "babel-eslint": "^8.0.1",
+    "coveralls": "^3.0.0",
     "eslint": "^4.9.0",
     "eslint-plugin-react": "^7.4.0",
     "eslint-plugin-react-native": "^3.1.0",
@@ -41,7 +42,10 @@
     "should": "^13.1.2"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "setupFiles": [
+      "./tests/config.js"
+    ]
   },
   "dependencies": {
     "buffer": "^5.0.8",
