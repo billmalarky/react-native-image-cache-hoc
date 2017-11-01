@@ -4,6 +4,9 @@
 # https://docs.travis-ci.com/user/customizing-the-build/
 #
 
+env:
+  - COVERALLS_ENV=production
+
 branches:
   only:
   - master

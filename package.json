@@ -4,7 +4,7 @@
   "description": "React Native Higher Order Component that adds advanced caching functionality to the react native Image component.",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "test": "./node_modules/.bin/jest --coverage && if [ \"$COVERALLS_ENV\" == \"production\" ]; then cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js; fi",
     "lint": "eslint ."
   },
   "repository": {
