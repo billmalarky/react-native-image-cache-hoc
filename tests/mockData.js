@@ -7,5 +7,10 @@
  */
 export const mockData = {
   basePath: '/base/file/path',
-  externalImageResource: 'https://i.redd.it/rc29s4bz61uz.png'
+  mockCacheableImageProps: {
+    source: {
+      uri: 'https://i.redd.it/rc29s4bz61uz.png'
+    },
+    permanent: false
+  }
 };

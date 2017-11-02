@@ -7,7 +7,7 @@
 import should from 'should'; // eslint-disable-line no-unused-vars
 import React from 'react';
 import 'react-native';
-import imageCacheHOC from '../lib/imageCacheHoc';
+import imageCacheHoc from '../lib/imageCacheHoc';
 import {
   StyleSheet,
   View,
@@ -24,7 +24,7 @@ describe('CacheableImage', function() {
 
   it('renders correctly', () => {
 
-    const CacheableImage = imageCacheHOC(Image);
+    const CacheableImage = imageCacheHoc(Image);
 
     const styles = StyleSheet.create({
       container: {
@@ -46,7 +46,7 @@ describe('CacheableImage', function() {
     const tree = renderer.create(
       <View style={styles.container}>
         <Text style={styles.welcome}>Test CacheableImage Component</Text>
-        <CacheableImage style={styles.image} source={{uri: mockData.externalImageResource}} permanent={false} />
+        <CacheableImage style={styles.image} source={mockData.mockCacheableImageProps.source} permanent={mockData.mockCacheableImageProps.permanent} />
       </View>
     );
     expect(tree).toMatchSnapshot(); //If UI changes, this snapshot must be updated. See comment below.
