@@ -6,6 +6,7 @@
 import should from 'should'; // eslint-disable-line no-unused-vars
 import FileSystemFactory, { FileSystem } from '../lib/FileSystem';
 import pathLib from 'path';
+import { mockData } from './mockData';
 
 describe('lib/FileSystem', function() {
 
@@ -39,7 +40,7 @@ describe('lib/FileSystem', function() {
     fileSystem.should.have.properties({
       os: 'ios',
       cachePruneTriggerLimit: 15728640,
-      baseFilePath: '/ios-test/react-native-image-cache-hoc/'
+      baseFilePath: mockData.basePath + '/react-native-image-cache-hoc/'
     });
 
   });
@@ -48,7 +49,7 @@ describe('lib/FileSystem', function() {
 
     const fileSystem = FileSystemFactory();
 
-    fileSystem._setBaseFilePath('test-file-dir-name').should.equal('/ios-test/test-file-dir-name/');
+    fileSystem._setBaseFilePath('test-file-dir-name').should.equal(mockData.basePath + '/test-file-dir-name/');
 
   });
 
@@ -59,9 +60,9 @@ describe('lib/FileSystem', function() {
     let badPath = '../../../../badpath';
 
     try {
-      fileSystem._validatePath(badPath)
+      fileSystem._validatePath(badPath);
     } catch (error) {
-      let resolvedPath = pathLib.resolve('/ios-test/react-native-image-cache-hoc/' + badPath);
+      let resolvedPath = pathLib.resolve(mockData.basePath + '/react-native-image-cache-hoc/' + badPath);
       error.should.deepEqual(new Error(resolvedPath + ' is not a valid file path.'));
     }
 
@@ -105,10 +106,10 @@ describe('lib/FileSystem', function() {
 
     return fileSystem.fetchFile('https://google.com/arbitrary.jpg', true, badFileName)
       .then(() => {
-        throw new error('Bad file name was not caught.');
+        throw new Error('Bad file name was not caught.');
       })
       .catch((error) => {
-        let resolvedPath = pathLib.resolve('/ios-test/react-native-image-cache-hoc/' + badFileName);
+        let resolvedPath = pathLib.resolve(mockData.basePath + '/react-native-image-cache-hoc/permanent/' + badFileName);
         error.should.deepEqual(new Error(resolvedPath + ' is not a valid file path.'));
       });
 
@@ -121,10 +122,10 @@ describe('lib/FileSystem', function() {
     // fileSystem.exists() is mocked to always return true, so error should always be thrown unless clobber is set to true.
     return fileSystem.fetchFile('https://img.wennermedia.com/5333a62d-07db-432a-92e2-198cafa38a14-326adb1a-d8ed-4a5d-b37e-5c88883e1989.png')
       .then(() => {
-        throw new error('Clobber logic failed, a file was overwritten.');
+        throw new Error('Clobber logic failed, a file was overwritten.');
       })
       .catch((error) => {
-        error.should.deepEqual(new Error('A file already exists at /ios-test/react-native-image-cache-hoc/cache/cd7d2199cd8e088cdfd9c99fc6359666adc36289.png and clobber is set to false.'));
+        error.should.deepEqual(new Error('A file already exists at '+ mockData.basePath +'/react-native-image-cache-hoc/cache/cd7d2199cd8e088cdfd9c99fc6359666adc36289.png and clobber is set to false.'));
       });
 
   });
