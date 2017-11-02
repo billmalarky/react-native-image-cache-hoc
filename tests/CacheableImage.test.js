@@ -107,4 +107,18 @@ describe('CacheableImage', function() {
 
   });
 
+  it('#render with valid props does not throw an error.', () => {
+
+    const CacheableImage = imageCacheHoc(Image);
+
+    const cacheableImage = new CacheableImage(mockData.mockCacheableImageProps);
+
+    cacheableImage.render();
+
+    cacheableImage.state.localFilePath = './test.jpg';
+
+    cacheableImage.render();
+
+  });
+
 });
