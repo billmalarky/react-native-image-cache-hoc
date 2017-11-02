@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/billmalarky/react-native-image-cache-hoc.svg?branch=master)](https://travis-ci.org/billmalarky/react-native-image-cache-hoc)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/billmalarky/react-native-image-cache-hoc/blob/master/LICENSE)
 [![ESLint](https://img.shields.io/badge/eslint-ok-green.svg)](https://github.com/billmalarky/react-native-image-cache-hoc/blob/master/.eslintrc.js)
+[![Coverage Status](https://coveralls.io/repos/github/billmalarky/react-native-image-cache-hoc/badge.svg?branch=master)](https://coveralls.io/github/billmalarky/react-native-image-cache-hoc?branch=master)
 
 React Native Higher Order Component that adds advanced caching functionality to the react native Image component.
 
