@@ -30,7 +30,7 @@ jest.mock('react-native-fetch-blob', () => {
         CacheDir: mockData.basePath,
         DocumentDir: mockData.basePath
       },
-      exists: () => { return true; },
+      exists: jest.fn(),
       lstat: () => {
 
         let lstat = [
@@ -52,13 +52,7 @@ jest.mock('react-native-fetch-blob', () => {
     return mockRNFetchBlob; // Must return reference to self to support method chaining.
   };
 
-  mockRNFetchBlob.fetch = () => {
-    return {
-      path: () => {
-        return '/this/is/path/to/file.jpg';
-      }
-    };
-  };
+  mockRNFetchBlob.fetch = jest.fn();
 
   return mockRNFetchBlob;
 

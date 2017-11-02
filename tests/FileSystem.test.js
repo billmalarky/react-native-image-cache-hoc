@@ -74,6 +74,10 @@ describe('lib/FileSystem', function() {
 
   it('#exists mocked as true.', () => {
 
+    const RNFetchBlob = require('react-native-fetch-blob');
+    RNFetchBlob.fs.exists
+      .mockReturnValue(true);
+
     const fileSystem = FileSystemFactory();
 
     fileSystem.exists('abitrary-file.jpg').should.be.true();
@@ -98,6 +102,64 @@ describe('lib/FileSystem', function() {
 
   });
 
+  it('#getLocalFilePathFromUrl should return local filepath if it exists on local fs in permanent dir.', () => {
+
+    const RNFetchBlob = require('react-native-fetch-blob');
+    RNFetchBlob.fs.exists
+      .mockReturnValueOnce(true) // mock exist in local permanent dir
+      .mockReturnValue(true);
+
+    const fileSystem = FileSystemFactory();
+
+    return fileSystem.getLocalFilePathFromUrl('https://img.wennermedia.com/5333a62d-07db-432a-92e2-198cafa38a14-326adb1a-d8ed-4a5d-b37e-5c88883e1989.png')
+      .then( localFilePath => {
+        localFilePath.should.equal(mockData.basePath + '/react-native-image-cache-hoc/permanent/cd7d2199cd8e088cdfd9c99fc6359666adc36289.png');
+      });
+
+  });
+
+  it('#getLocalFilePathFromUrl should return local filepath if it exists on local fs in cache dir.', () => {
+
+    const RNFetchBlob = require('react-native-fetch-blob');
+    RNFetchBlob.fs.exists
+      .mockReturnValueOnce(false) // mock not exist in local permanent dir
+      .mockReturnValueOnce(true) // mock exist in local cache dir
+      .mockReturnValue(true);
+
+    const fileSystem = FileSystemFactory();
+
+    return fileSystem.getLocalFilePathFromUrl('https://img.wennermedia.com/5333a62d-07db-432a-92e2-198cafa38a14-326adb1a-d8ed-4a5d-b37e-5c88883e1989.png')
+      .then( localFilePath => {
+        localFilePath.should.equal(mockData.basePath + '/react-native-image-cache-hoc/cache/cd7d2199cd8e088cdfd9c99fc6359666adc36289.png');
+      });
+
+  });
+
+  it('#getLocalFilePathFromUrl should download file and write to disk (default to cache dir) if it does not exist on local fs.', () => {
+
+    const RNFetchBlob = require('react-native-fetch-blob');
+    RNFetchBlob.fs.exists
+      .mockReturnValueOnce(false) // mock not exist in local permanent dir
+      .mockReturnValueOnce(false) // mock not exist in local cache dir
+      .mockReturnValueOnce(false) // mock does not exist to get past clobber
+      .mockReturnValue(true);
+
+    RNFetchBlob.fetch
+      .mockReturnValue({
+        path: () => {
+          return '/this/is/path/to/file.jpg';
+        }
+      });
+
+    const fileSystem = FileSystemFactory();
+
+    return fileSystem.getLocalFilePathFromUrl('https://img.wennermedia.com/5333a62d-07db-432a-92e2-198cafa38a14-326adb1a-d8ed-4a5d-b37e-5c88883e1989.png')
+      .then( localFilePath => {
+        localFilePath.should.equal('/this/is/path/to/file.jpg');
+      });
+
+  });
+
   it('#fetchFile should validate path.', () => {
 
     const fileSystem = FileSystemFactory();
@@ -119,6 +181,14 @@ describe('lib/FileSystem', function() {
 
     const fileSystem = FileSystemFactory();
 
+    const RNFetchBlob = require('react-native-fetch-blob');
+    RNFetchBlob.fetch
+      .mockReturnValue({
+        path: () => {
+          return '/this/is/path/to/file.jpg';
+        }
+      });
+
     // fileSystem.exists() is mocked to always return true, so error should always be thrown unless clobber is set to true.
     return fileSystem.fetchFile('https://img.wennermedia.com/5333a62d-07db-432a-92e2-198cafa38a14-326adb1a-d8ed-4a5d-b37e-5c88883e1989.png')
       .then(() => {
@@ -133,6 +203,14 @@ describe('lib/FileSystem', function() {
   it('#fetchFile prune logic should not be called on permanent writes.', () => {
 
     const fileSystem = FileSystemFactory();
+
+    const RNFetchBlob = require('react-native-fetch-blob');
+    RNFetchBlob.fetch
+      .mockReturnValue({
+        path: () => {
+          return '/this/is/path/to/file.jpg';
+        }
+      });
 
     let pruneCacheHit = false;
 
@@ -153,6 +231,14 @@ describe('lib/FileSystem', function() {
 
     const fileSystem = FileSystemFactory();
 
+    const RNFetchBlob = require('react-native-fetch-blob');
+    RNFetchBlob.fetch
+      .mockReturnValue({
+        path: () => {
+          return '/this/is/path/to/file.jpg';
+        }
+      });
+
     let pruneCacheHit = false;
 
     // Mock fileSystem.pruneCache() to determine if it is called correctly.
@@ -171,6 +257,14 @@ describe('lib/FileSystem', function() {
   it('#fetchFile should work as expected.', () => {
 
     const fileSystem = FileSystemFactory();
+
+    const RNFetchBlob = require('react-native-fetch-blob');
+    RNFetchBlob.fetch
+      .mockReturnValue({
+        path: () => {
+          return '/this/is/path/to/file.jpg';
+        }
+      });
 
     // Mock fileSystem.pruneCache().
     fileSystem.pruneCache = () => {};
