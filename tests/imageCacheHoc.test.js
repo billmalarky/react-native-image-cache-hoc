@@ -7,7 +7,7 @@
 import should from 'should'; // eslint-disable-line no-unused-vars
 import React from 'react';
 import 'react-native';
-import imageCacheHOC from '../lib/imageCacheHOC';
+import imageCacheHOC from '../lib/imageCacheHoc';
 import {
   StyleSheet,
   View,
