@@ -64,7 +64,7 @@ describe('CacheableImage', function() {
 
       throw new Error('Invalid source uri prop was accepted.');
     } catch (error) {
-      error.should.deepEqual(new Error('Invalid source prop. <CacheableImage> props.source.uri should be a web accessible url.'));
+      error.should.deepEqual(new Error('Invalid source prop. <CacheableImage> props.source.uri should be a web accessible url with a valid protocol and host. NOTE: Default valid protocol is https, default valid hosts are *.'));
     }
 
     // Verify source uri prop only accepts web accessible urls from whitelist if whitelist set.
@@ -83,7 +83,7 @@ describe('CacheableImage', function() {
 
       throw new Error('Invalid source uri prop was accepted.');
     } catch (error) {
-      error.should.deepEqual(new Error('Invalid source prop. <CacheableImage> props.source.uri should be a web accessible url.'));
+      error.should.deepEqual(new Error('Invalid source prop. <CacheableImage> props.source.uri should be a web accessible url with a valid protocol and host. NOTE: Default valid protocol is https, default valid hosts are *.'));
     }
 
     // Verify source uri prop only accepts web accessible urls from correct protocols if protocol list set.
@@ -102,7 +102,7 @@ describe('CacheableImage', function() {
 
       throw new Error('Invalid source uri prop was accepted.');
     } catch (error) {
-      error.should.deepEqual(new Error('Invalid source prop. <CacheableImage> props.source.uri should be a web accessible url.'));
+      error.should.deepEqual(new Error('Invalid source prop. <CacheableImage> props.source.uri should be a web accessible url with a valid protocol and host. NOTE: Default valid protocol is https, default valid hosts are *.'));
     }
 
   });
