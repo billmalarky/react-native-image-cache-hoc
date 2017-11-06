@@ -122,7 +122,26 @@ imageCacheHoc(Image, {
   cachePruneTriggerLimit: 1024 * 1024 * 10
   
 });
-````
+```
+
+## Jest Test Support
+
+React Native Image Cache HOC must be run in a native environment to work correctly. As a result it will create issues in your jest tests unless you mock it. Since this module is an HOC that adds additional functionality to the standard \<Image\> component, it can be easily mocked with a function that returns the standard \<Image\> component.
+
+**Add the following to your jest mocks:**
+
+```js
+jest.mock('react-native-image-cache-hoc', () => {
+
+  const mockComponent = require('react-native/jest/mockComponent');
+
+  return function() {
+    return mockComponent('Image');
+  }
+
+});
+```
+
 
 ## Warning
 
