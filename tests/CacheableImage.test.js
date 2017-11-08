@@ -10,6 +10,70 @@ import { Image } from 'react-native';
 
 describe('CacheableImage', function() {
 
+  it('HOC options validation should work as expected.', () => {
+
+    // Check validation is catching bad option input.
+    try {
+      imageCacheHoc(Image, {
+        validProtocols: 'string'
+      });
+    } catch (error) {
+      error.should.deepEqual(new Error('validProtocols option must be an array of protocol strings.'));
+    }
+
+    try {
+      imageCacheHoc(Image, {
+        fileHostWhitelist: 'string'
+      });
+    } catch (error) {
+      error.should.deepEqual(new Error('fileHostWhitelist option must be an array of host strings.'));
+    }
+
+    try {
+      imageCacheHoc(Image, {
+        cachePruneTriggerLimit: 'string'
+      });
+    } catch (error) {
+      error.should.deepEqual(new Error('cachePruneTriggerLimit option must be an integer.'));
+    }
+
+    try {
+      imageCacheHoc(Image, {
+        fileDirName: 1
+      });
+    } catch (error) {
+      error.should.deepEqual(new Error('fileDirName option must be string'));
+    }
+
+    try {
+      imageCacheHoc(Image, {
+        defaultPlaceholder: 5478329
+      });
+    } catch (error) {
+      error.should.deepEqual(new Error('defaultPlaceholder option object must include "component" and "props" properties (props can be an empty object)'));
+    }
+
+    const validOptions = {
+      validProtocols: ['http', 'https'],
+      fileHostWhitelist: ['i.redd.it', 'localhost'],
+      cachePruneTriggerLimit: 1024 * 1024 * 10,
+      fileDirName: 'test-dir',
+      defaultPlaceholder: {
+        component: Image,
+        props: {}
+      }
+    };
+
+    // Valid options shouldn't throw an error
+    const CacheableImage = imageCacheHoc(Image, validOptions);
+
+    // Check options are set correctly on component
+    const cacheableImage = new CacheableImage(mockData.mockCacheableImageProps);
+
+    cacheableImage.options.should.have.properties(validOptions);
+
+  });
+
   it('Component property type validation should exist.', () => {
 
     const CacheableImage = imageCacheHoc(Image);
@@ -38,7 +102,8 @@ describe('CacheableImage', function() {
       validProtocols: [ 'https' ],
       fileHostWhitelist: [],
       cachePruneTriggerLimit: 15728640,
-      fileDirName: null
+      fileDirName: null,
+      defaultPlaceholder: null
     });
     cacheableImage.fileSystem.should.have.properties({
       os: 'ios',

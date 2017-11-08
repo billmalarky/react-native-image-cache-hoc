@@ -39,7 +39,11 @@ To troubleshoot linking, refer to [the react-native-fetch-blob installation inst
 
 React Native Image Cache HOC creates an advanced image component, \<CacheableImage\>, that is a drop in replacement for the standard \<Image\> component. 
 
-The only change in the advanced component API is the component "source" prop only accepts a web accessible url (there's no reason to use this library to render files that already exist on the local filesystem). Additionally there is a new, optional, prop "permanent" that determines if the image file should be stored forever on the local filesystem instead of written to a temperary cache. Typically "permanent" images would be static files that would traditionally ship with with app itself.
+**Differences between the advanced image component and standard image component API are as follows:**
+
+1. **Modified "source" Prop:** The advanced component "source" prop only accepts a web accessible url (there's no reason to use this library to render files that already exist on the local filesystem), and it does NOT accept an array of urls.
+2. **New "permanent" Prop:** The new, optional (defaults to False), "permanent" prop determines if the image file should be stored forever on the local filesystem instead of written to a temperary cache that is subject to occasional pruning.
+3. **New  "placeholder" Prop:** The new, optional (defaults to standard Image component), "placeholder" prop determines component to render while remote image file is downloading.
 
 **TL;DR: To cache image files for performance, simply use \<CacheableImage\> as a drop in replacement for \<Image\>. To store files permanently add a permanent={true} prop to \<CacheableImage\>.**
 
@@ -119,10 +123,96 @@ imageCacheHoc(Image, {
   // but sequential writes to the cache will trigger cache pruning 
   // which will delete cached files until total cache size is below this limit before writing.
   // Defaults to 15 MB.
-  cachePruneTriggerLimit: 1024 * 1024 * 10
+  cachePruneTriggerLimit: 1024 * 1024 * 10,
+  
+  // Default placeholder component to render while remote image file is downloading. 
+  // Can be overridden with placeholder prop like <CacheableImage placeholder={placeHolderObject} />. 
+  //
+  // Placeholder Object is structed like:
+  // const placeHolderObject = {
+  //   component: ReactComponentToUseHere,
+  //    props: {
+  //      examplePropLikeStyle: componentStylePropValue,
+  //      anotherExamplePropLikeSource: componentSourcePropValue
+  //   }
+  // };
+  //
+  // Defaults to <Image> component with style prop passed through.
+  defaultPlaceholder: {
+    component: ActivityIndicator,
+    props: {
+      style: activityIndicatorStyle
+    }
+  }
   
 });
 ```
+
+## Using Loading Placeholders
+
+React Native Image Cache HOC allows you to easily supply any component to be used as a placeholder while the remote image file is downloading. While the default placeholder should be great for many use cases, you can easily use your own to match the style of the rest of your app.
+
+```js
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  image: {
+    width:150,
+    height: 204
+  },
+  activityIndicatorStyle: {
+    width: 150,
+    height: 204,
+    backgroundColor: '#dc143c'
+  }
+});
+
+// This placeholder object will be used as a placeholder component for all instances of <CacheableImage> 
+// unless individual <CacheableImage> uses "placeholder" prop to override this default.
+const defaultPlaceholderObject = {
+  component: ActivityIndicator,
+  props: {
+    style: styles.activityIndicatorStyle
+  }
+};
+
+// We will use this placeholder object to override the default placeholder.
+const propOverridePlaceholderObject = {
+  component: Image,
+  props: {
+    style: styles.image,
+    source: {require('./localPlaceholderImage.png')}
+  }
+};
+
+const CacheableImage = imageCacheHoc(Image, {
+  defaultPlaceholder: defaultPlaceholderObject
+});
+
+export default class App extends Component<{}> {
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.welcome}>Welcome to React Native!</Text>
+        <CacheableImage style={styles.image} source={{uri: 'https://i.redd.it/rc29s4bz61uz.png'}} />
+        <CacheableImage style={styles.image} source={{uri: 'https://i.redd.it/hhhim0kc5swz.jpg'}} placeholder={propOverridePlaceholderObject} />
+        <CacheableImage style={styles.image} source={{uri: 'https://i.redd.it/17ymhqwgbswz.jpg'}} />
+      </View>
+  );
+  }
+}
+```
+
 
 ## Jest Test Support
 
