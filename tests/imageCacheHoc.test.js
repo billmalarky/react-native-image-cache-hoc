@@ -78,7 +78,7 @@ describe('CacheableImage', function() {
         width:150,
         height: 204
       },
-      placeholderImage: {
+      placeholderImage: { // eslint-disable-line react-native/no-color-literals
         width:150,
         height: 204,
         backgroundColor: '#00ffff'
@@ -125,7 +125,7 @@ describe('CacheableImage', function() {
         width:150,
         height: 204
       },
-      optionPlaceholder: {
+      optionPlaceholder: { // eslint-disable-line react-native/no-color-literals
         width:150,
         height: 204,
         backgroundColor: '#dc143c'

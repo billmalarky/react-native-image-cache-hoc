@@ -82,7 +82,8 @@ describe('CacheableImage', function() {
       'fileHostWhitelist',
       'source',
       'permanent',
-      'style'
+      'style',
+      'placeholder'
     ]);
 
   });
