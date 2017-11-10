@@ -213,6 +213,39 @@ export default class App extends Component<{}> {
 }
 ```
 
+## Static Methods
+
+The CacheableImage class returned by React Native Image Cache HOC includes a couple of static methods for convenience.
+
+**CacheableImage.cacheFile(url, permanent)**
+
+Use this method if you need to download a file to the local filesystem prior to rendering \<CacheableImage\> for some reason (perhaps to pre-warm the local cache). If calling this method repeatedly to cache a long list of files, be sure to use a queue and limit concurrency so your app performance does not suffer.
+
+```js
+import imageCacheHoc from 'react-native-image-cache-hoc';
+const CacheableImage = imageCacheHoc(Image);
+CacheableImage.cacheFile('https://i.redd.it/17ymhqwgbswz.jpg');
+
+// The https://i.redd.it/17ymhqwgbswz.jpg remote file is now saved to local fs. 
+// Since permanent was not set, this file is subject to cache pruning.
+
+CacheableImage.cacheFile('https://i.redd.it/hhhim0kc5swz.jpg', true);
+
+// The https://i.redd.it/hhhim0kc5swz.jpg remote file is now saved to local fs permanently.
+```
+
+**CacheableImage.flush()**
+
+Delete all locally stored image files created by react-native-image-cache-hoc (cache AND permanent). Calling this method will cause a performance hit on your app until the local files are rebuilt.
+
+```js
+import imageCacheHoc from 'react-native-image-cache-hoc';
+const CacheableImage = imageCacheHoc(Image);
+CacheableImage.flush();
+
+// All local filles created by 'react-native-image-cache-hoc' are now destroyed. 
+// They will be rebuilt by future <CacheableImage> renders.
+```
 
 ## Jest Test Support
 
