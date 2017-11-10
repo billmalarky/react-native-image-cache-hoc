@@ -263,9 +263,16 @@ React Native Image Cache HOC must be run in a native environment to work correct
 jest.mock('react-native-image-cache-hoc', () => {
 
   const mockComponent = require('react-native/jest/mockComponent');
+  const MockCacheableImage = mockComponent('Image');
+  
+  // Add mock static methods
+  // To see how to use jest.fn() to return mock data in your tests see the following:
+  // https://facebook.github.io/jest/docs/en/mock-function-api.html
+  MockCacheableImage.cacheFile = jest.fn(); 
+  MockCacheableImage.flush = jest.fn();
 
   return function() {
-    return mockComponent('Image');
+    return MockCacheableImage;
   }
 
 });
