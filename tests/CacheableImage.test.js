@@ -1,6 +1,6 @@
 
 // Define globals for eslint.
-/* global describe it */
+/* global describe it require */
 
 // Load dependencies
 import should from 'should'; // eslint-disable-line no-unused-vars
