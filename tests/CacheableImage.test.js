@@ -88,6 +88,93 @@ describe('CacheableImage', function() {
 
   });
 
+  it('#cacheFile static method should work as expected for cache dir files.', () => {
+
+    // RNFetchBlob Mocks
+    const RNFetchBlob = require('react-native-fetch-blob');
+
+    // Mock that file does not exist on local fs.
+    RNFetchBlob.fs.exists
+      .mockReturnValue(false);
+
+    // Mock fetch result
+    RNFetchBlob.fetch
+      .mockReturnValue({
+        path: () => {
+          return '/this/is/path/to/file.jpg';
+        }
+      });
+
+    const CacheableImage = imageCacheHoc(Image);
+
+    return CacheableImage.cacheFile('https://i.redd.it/rc29s4bz61uz.png')
+      .then(result => {
+
+        result.should.deepEqual({
+          url: 'https://i.redd.it/rc29s4bz61uz.png',
+          cacheType: 'cache',
+          localFilePath: '/this/is/path/to/file.jpg'
+        });
+
+      });
+
+  });
+
+  it('#cacheFile static method should work as expected for permanent dir files.', () => {
+
+    // RNFetchBlob Mocks
+    const RNFetchBlob = require('react-native-fetch-blob');
+
+    // Mock that file does not exist on local fs.
+    RNFetchBlob.fs.exists
+      .mockReturnValue(false);
+
+    // Mock fetch result
+    RNFetchBlob.fetch
+      .mockReturnValue({
+        path: () => {
+          return '/this/is/path/to/file.jpg';
+        }
+      });
+
+    const CacheableImage = imageCacheHoc(Image);
+
+    return CacheableImage.cacheFile('https://i.redd.it/rc29s4bz61uz.png', true)
+      .then(result => {
+
+        result.should.deepEqual({
+          url: 'https://i.redd.it/rc29s4bz61uz.png',
+          cacheType: 'permanent',
+          localFilePath: '/this/is/path/to/file.jpg'
+        });
+
+      });
+
+  });
+
+  it('#flush static method should work as expected.', () => {
+
+    // RNFetchBlob Mocks
+    const RNFetchBlob = require('react-native-fetch-blob');
+
+    // Mock unlink to always be true.
+    RNFetchBlob.fs.unlink
+      .mockReturnValue(true);
+
+    const CacheableImage = imageCacheHoc(Image);
+
+    return CacheableImage.flush()
+      .then(result => {
+
+        result.should.deepEqual({
+          permanentDirFlushed: true,
+          cacheDirFlushed: true
+        });
+
+      });
+
+  });
+
   it('#constructor should initialize class object properties correctly.', () => {
 
     const CacheableImage = imageCacheHoc(Image);

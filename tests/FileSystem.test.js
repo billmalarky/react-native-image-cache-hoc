@@ -290,4 +290,42 @@ describe('lib/FileSystem', function() {
 
   });
 
+  it('#unlink should only accept valid paths.', () => {
+
+    const fileSystem = FileSystemFactory();
+
+    const badFileName = '/../../../../../bad-file-name.jpg';
+
+    return fileSystem.unlink(badFileName)
+      .then(() => {
+        throw new Error('Bad file path was accepted.');
+      })
+      .catch((error) => {
+        let resolvedPath = pathLib.resolve(mockData.basePath + badFileName);
+
+        error.should.deepEqual(new Error(resolvedPath + ' is not a valid file path.'));
+      });
+
+  });
+
+  it('#unlink should work as expected for valid paths.', () => {
+
+    // RNFetchBlob Mocks
+    const RNFetchBlob = require('react-native-fetch-blob');
+
+    // Mock unlink to be true.
+    RNFetchBlob.fs.unlink
+      .mockReturnValueOnce(true);
+
+    const fileSystem = FileSystemFactory();
+
+    const validPath = '/permanent/valid.jpg';
+
+    return fileSystem.unlink(validPath)
+      .then( result => {
+        result.should.be.true();
+      });
+
+  });
+
 });
