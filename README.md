@@ -224,14 +224,18 @@ Use this method if you need to download a file to the local filesystem prior to 
 ```js
 import imageCacheHoc from 'react-native-image-cache-hoc';
 const CacheableImage = imageCacheHoc(Image);
-CacheableImage.cacheFile('https://i.redd.it/17ymhqwgbswz.jpg');
+CacheableImage.cacheFile('https://i.redd.it/17ymhqwgbswz.jpg')
+  .then( localFileInfo => {
+    console.log(localFileInfo);
+    // The https://i.redd.it/17ymhqwgbswz.jpg remote file is now saved to local fs. 
+    // Since permanent was not set, this file is subject to cache pruning.
+  });
 
-// The https://i.redd.it/17ymhqwgbswz.jpg remote file is now saved to local fs. 
-// Since permanent was not set, this file is subject to cache pruning.
-
-CacheableImage.cacheFile('https://i.redd.it/hhhim0kc5swz.jpg', true);
-
-// The https://i.redd.it/hhhim0kc5swz.jpg remote file is now saved to local fs permanently.
+CacheableImage.cacheFile('https://i.redd.it/hhhim0kc5swz.jpg', true)
+  .then( localFileInfo => {
+    console.log(localFileInfo);
+    // The https://i.redd.it/hhhim0kc5swz.jpg remote file is now saved to local fs permanently.
+  });
 ```
 
 **CacheableImage.flush()**
@@ -241,10 +245,12 @@ Delete all locally stored image files created by react-native-image-cache-hoc (c
 ```js
 import imageCacheHoc from 'react-native-image-cache-hoc';
 const CacheableImage = imageCacheHoc(Image);
-CacheableImage.flush();
-
-// All local filles created by 'react-native-image-cache-hoc' are now destroyed. 
-// They will be rebuilt by future <CacheableImage> renders.
+CacheableImage.flush()
+  .then( flushResults => {
+    console.log(flushResults);
+    // All local filles created by 'react-native-image-cache-hoc' are now destroyed. 
+    // They will be rebuilt by future <CacheableImage> renders.
+  });
 ```
 
 ## Jest Test Support
