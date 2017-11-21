@@ -1,12 +1,14 @@
 
 // Define globals for eslint.
-/* global describe it require */
+/* global describe it require jest */
 
 // Load dependencies
 import should from 'should'; // eslint-disable-line no-unused-vars
 import { mockData } from './mockData';
 import imageCacheHoc from '../lib/imageCacheHoc';
 import { Image } from 'react-native';
+import sinon from 'sinon';
+import 'should-sinon';
 
 describe('CacheableImage', function() {
 
@@ -257,6 +259,27 @@ describe('CacheableImage', function() {
     } catch (error) {
       error.should.deepEqual(new Error('Invalid source prop. <CacheableImage> props.source.uri should be a web accessible url with a valid protocol and host. NOTE: Default valid protocol is https, default valid hosts are *.'));
     }
+
+  });
+
+  it('setState() actions on component mount should create cancelable functions and use on unmount.', () => {
+
+    // Set up mocks
+    const FileSystem = require('../lib/FileSystem').default;
+    FileSystem.prototype.getLocalFilePathFromUrl = jest.fn();
+    FileSystem.prototype.getLocalFilePathFromUrl.mockReturnValue(new Promise((resolve) => {
+      resolve(mockData.basePath + '/react-native-image-cache-hoc/permanent/cd7d2199cd8e088cdfd9c99fc6359666adc36289.png');
+    }));
+
+    const CacheableImage = imageCacheHoc(Image);
+    const cacheableImage = new CacheableImage(mockData.mockCacheableImageProps);
+
+    // Mount and unmount
+    cacheableImage.componentDidMount();
+    cacheableImage.cancelLocalFilePathRequest(); // Call it once manually to actually cancel local file path request
+    cacheableImage.cancelLocalFilePathRequest = sinon.spy(); // Set up a spy to make sure it gets called in componentWillUnmount().
+    cacheableImage.componentWillUnmount();
+    cacheableImage.cancelLocalFilePathRequest.should.be.calledOnce();
 
   });
 
