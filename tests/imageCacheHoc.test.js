@@ -1,7 +1,7 @@
 
 // Define globals for eslint.
 /* global describe it */
-/* global expect */
+/* global expect require */
 
 // Load dependencies
 import should from 'should'; // eslint-disable-line no-unused-vars
@@ -23,6 +23,21 @@ import renderer from 'react-test-renderer';
 describe('CacheableImage', function() {
 
   it('renders correctly', () => {
+
+    //Mock values for local/remote file request logic.
+    const RNFetchBlob = require('react-native-fetch-blob');
+    RNFetchBlob.fs.exists
+      .mockReturnValueOnce(false) // mock not exist in local permanent dir
+      .mockReturnValueOnce(false) // mock not exist in local cache dir
+      .mockReturnValueOnce(false) // mock does not exist to get past clobber
+      .mockReturnValue(true);
+
+    RNFetchBlob.fetch
+      .mockReturnValue({
+        path: () => {
+          return '/this/is/path/to/file.jpg';
+        }
+      });
 
     const CacheableImage = imageCacheHoc(Image);
 
@@ -60,6 +75,21 @@ describe('CacheableImage', function() {
   });
 
   it('renders correctly with placeholder prop set', () => {
+
+    //Mock values for local/remote file request logic.
+    const RNFetchBlob = require('react-native-fetch-blob');
+    RNFetchBlob.fs.exists
+      .mockReturnValueOnce(false) // mock not exist in local permanent dir
+      .mockReturnValueOnce(false) // mock not exist in local cache dir
+      .mockReturnValueOnce(false) // mock does not exist to get past clobber
+      .mockReturnValue(true);
+
+    RNFetchBlob.fetch
+      .mockReturnValue({
+        path: () => {
+          return '/this/is/path/to/file.jpg';
+        }
+      });
 
     const CacheableImage = imageCacheHoc(Image);
 
@@ -109,6 +139,21 @@ describe('CacheableImage', function() {
   });
 
   it('renders correctly with placeholder option set', () => {
+
+    //Mock values for local/remote file request logic.
+    const RNFetchBlob = require('react-native-fetch-blob');
+    RNFetchBlob.fs.exists
+      .mockReturnValueOnce(false) // mock not exist in local permanent dir
+      .mockReturnValueOnce(false) // mock not exist in local cache dir
+      .mockReturnValueOnce(false) // mock does not exist to get past clobber
+      .mockReturnValue(true);
+
+    RNFetchBlob.fetch
+      .mockReturnValue({
+        path: () => {
+          return '/this/is/path/to/file.jpg';
+        }
+      });
 
     const styles = StyleSheet.create({
       container: {
