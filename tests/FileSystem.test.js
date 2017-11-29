@@ -84,7 +84,7 @@ describe('lib/FileSystem', function() {
 
   });
 
-  it('#getFileNameFromUrl should create a sha1 filename from a PNG/JPG/GIF url.', () => {
+  it('#getFileNameFromUrl should create a sha1 filename from a PNG/JPG/GIF/BMP url.', () => {
 
     const fileSystem = FileSystemFactory();
 
@@ -99,6 +99,24 @@ describe('lib/FileSystem', function() {
     let jpgFilename = fileSystem.getFileNameFromUrl('https://cdn2.hubspot.net/hub/42284/file-14233687-jpg/images/test_in_red.jpg');
 
     jpgFilename.should.equal('6adf4569ecc3bf8c378bb4d47b1995cd85c5a13c.jpg');
+
+    let bmpFilename = fileSystem.getFileNameFromUrl('https://cdn-learn.adafruit.com/assets/assets/000/010/147/original/tiger.bmp');
+
+    bmpFilename.should.equal('282fb62d2caff367aff828ce21e79575733605c8.bmp');
+
+  });
+
+  it('#getFileNameFromUrl should handle urls with same pathname but different query strings or fragments as individual files.', () => {
+
+    const fileSystem = FileSystemFactory();
+
+    const pngFilename = fileSystem.getFileNameFromUrl('https://img.wennermedia.com/5333a62d-07db-432a-92e2-198cafa38a14-326adb1a-d8ed-4a5d-b37e-5c88883e1989.png?exampleparam=one&anotherparam=2#this-is-a-fragment');
+
+    pngFilename.should.equal('9eea25bf871c2333648080180f6b616a91ce1b09.png');
+
+    const pngFilenameTwo = fileSystem.getFileNameFromUrl('https://img.wennermedia.com/5333a62d-07db-432a-92e2-198cafa38a14-326adb1a-d8ed-4a5d-b37e-5c88883e1989.png?exampleparam=DIFFERENT&anotherparam=2#this-is-a-fragment-two');
+
+    pngFilenameTwo.should.equal('09091b8880ddb982968a0fe28abed5034f9a43b8.png');
 
   });
 
