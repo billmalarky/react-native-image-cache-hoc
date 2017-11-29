@@ -1,6 +1,6 @@
 
 // Define globals for eslint.
-/* global describe it require */
+/* global describe it require jest */
 
 // Load dependencies
 import should from 'should'; // eslint-disable-line no-unused-vars
@@ -84,39 +84,108 @@ describe('lib/FileSystem', function() {
 
   });
 
-  it('#getFileNameFromUrl should create a sha1 filename from a PNG/JPG/GIF/BMP url.', () => {
+  it('#getFileNameFromUrl should create a sha1 filename from a PNG/JPG/GIF/BMP url.', async () => {
 
     const fileSystem = FileSystemFactory();
 
-    let pngFilename = fileSystem.getFileNameFromUrl('https://img.wennermedia.com/5333a62d-07db-432a-92e2-198cafa38a14-326adb1a-d8ed-4a5d-b37e-5c88883e1989.png');
+    let pngFilename = await fileSystem.getFileNameFromUrl('https://img.wennermedia.com/5333a62d-07db-432a-92e2-198cafa38a14-326adb1a-d8ed-4a5d-b37e-5c88883e1989.png');
 
     pngFilename.should.equal('cd7d2199cd8e088cdfd9c99fc6359666adc36289.png');
 
-    let gifFilename = fileSystem.getFileNameFromUrl('https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif');
+    let gifFilename = await fileSystem.getFileNameFromUrl('https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif');
 
     gifFilename.should.equal('c048132247cd28c7879ab36d78a8f45194640006.gif');
 
-    let jpgFilename = fileSystem.getFileNameFromUrl('https://cdn2.hubspot.net/hub/42284/file-14233687-jpg/images/test_in_red.jpg');
+    let jpgFilename = await fileSystem.getFileNameFromUrl('https://cdn2.hubspot.net/hub/42284/file-14233687-jpg/images/test_in_red.jpg');
 
     jpgFilename.should.equal('6adf4569ecc3bf8c378bb4d47b1995cd85c5a13c.jpg');
 
-    let bmpFilename = fileSystem.getFileNameFromUrl('https://cdn-learn.adafruit.com/assets/assets/000/010/147/original/tiger.bmp');
+    let bmpFilename = await fileSystem.getFileNameFromUrl('https://cdn-learn.adafruit.com/assets/assets/000/010/147/original/tiger.bmp');
 
     bmpFilename.should.equal('282fb62d2caff367aff828ce21e79575733605c8.bmp');
 
   });
 
-  it('#getFileNameFromUrl should handle urls with same pathname but different query strings or fragments as individual files.', () => {
+  it('#getFileNameFromUrl should handle urls with same pathname but different query strings or fragments as individual files.', async () => {
 
     const fileSystem = FileSystemFactory();
 
-    const pngFilename = fileSystem.getFileNameFromUrl('https://img.wennermedia.com/5333a62d-07db-432a-92e2-198cafa38a14-326adb1a-d8ed-4a5d-b37e-5c88883e1989.png?exampleparam=one&anotherparam=2#this-is-a-fragment');
+    const pngFilename = await fileSystem.getFileNameFromUrl('https://img.wennermedia.com/5333a62d-07db-432a-92e2-198cafa38a14-326adb1a-d8ed-4a5d-b37e-5c88883e1989.png?exampleparam=one&anotherparam=2#this-is-a-fragment');
 
     pngFilename.should.equal('9eea25bf871c2333648080180f6b616a91ce1b09.png');
 
-    const pngFilenameTwo = fileSystem.getFileNameFromUrl('https://img.wennermedia.com/5333a62d-07db-432a-92e2-198cafa38a14-326adb1a-d8ed-4a5d-b37e-5c88883e1989.png?exampleparam=DIFFERENT&anotherparam=2#this-is-a-fragment-two');
+    const pngFilenameTwo = await fileSystem.getFileNameFromUrl('https://img.wennermedia.com/5333a62d-07db-432a-92e2-198cafa38a14-326adb1a-d8ed-4a5d-b37e-5c88883e1989.png?exampleparam=DIFFERENT&anotherparam=2#this-is-a-fragment-two');
 
     pngFilenameTwo.should.equal('09091b8880ddb982968a0fe28abed5034f9a43b8.png');
+
+  });
+
+  it('#getFileNameFromUrl should handle PNG/JPG/GIF/BMP urls without file extensions by using content-type header.', async () => {
+
+    const fileSystem = FileSystemFactory();
+
+    // Mock fetch
+    fetch = jest.fn(); // eslint-disable-line no-global-assign
+
+    // Test PNG
+    fetch.mockReturnValueOnce(Promise.resolve({
+      headers: {
+        get: (headerName) => {
+
+          headerName.should.equals('content-type');
+
+          return 'image/png';
+        }
+      }
+    }));
+
+    const pngFilename = await fileSystem.getFileNameFromUrl('https://cdn2.hubspot.net/hub/42284/file-14233687-jpg/images/test_in_red');
+    pngFilename.should.equal('831eb245a3d9032cdce450f8760d2b8ddb442a3d.png');
+
+    // Test JPG
+    fetch.mockReturnValueOnce(Promise.resolve({
+      headers: {
+        get: (headerName) => {
+
+          headerName.should.equals('content-type');
+
+          return 'image/jpeg';
+        }
+      }
+    }));
+
+    const jpgFilename = await fileSystem.getFileNameFromUrl('https://cdn2.hubspot.net/hub/42284/file-14233687-jpg/images/test_in_red');
+    jpgFilename.should.equal('831eb245a3d9032cdce450f8760d2b8ddb442a3d.jpg');
+
+    // Test GIF
+    fetch.mockReturnValueOnce(Promise.resolve({
+      headers: {
+        get: (headerName) => {
+
+          headerName.should.equals('content-type');
+
+          return 'image/gif';
+        }
+      }
+    }));
+
+    const gifFilename = await fileSystem.getFileNameFromUrl('https://cdn2.hubspot.net/hub/42284/file-14233687-jpg/images/test_in_red');
+    gifFilename.should.equal('831eb245a3d9032cdce450f8760d2b8ddb442a3d.gif');
+
+    // Test BMP
+    fetch.mockReturnValueOnce(Promise.resolve({
+      headers: {
+        get: (headerName) => {
+
+          headerName.should.equals('content-type');
+
+          return 'image/bmp';
+        }
+      }
+    }));
+
+    const bmpFilename = await fileSystem.getFileNameFromUrl('https://cdn2.hubspot.net/hub/42284/file-14233687-jpg/images/test_in_red');
+    bmpFilename.should.equal('831eb245a3d9032cdce450f8760d2b8ddb442a3d.bmp');
 
   });
 

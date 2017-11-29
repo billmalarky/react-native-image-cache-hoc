@@ -262,7 +262,7 @@ describe('CacheableImage', function() {
 
   });
 
-  it('setState() actions on component mount should create cancelable functions and use on unmount.', () => {
+  it('setState() actions on component mount should create cancelable functions and use on unmount.', async () => {
 
     // Set up mocks
     const FileSystem = require('../lib/FileSystem').default;
@@ -275,10 +275,10 @@ describe('CacheableImage', function() {
     const cacheableImage = new CacheableImage(mockData.mockCacheableImageProps);
 
     // Mount and unmount
-    cacheableImage.componentDidMount();
+    await cacheableImage.componentDidMount();
     cacheableImage.cancelLocalFilePathRequest(); // Call it once manually to actually cancel local file path request
     cacheableImage.cancelLocalFilePathRequest = sinon.spy(); // Set up a spy to make sure it gets called in componentWillUnmount().
-    cacheableImage.componentWillUnmount();
+    await cacheableImage.componentWillUnmount();
     cacheableImage.cancelLocalFilePathRequest.should.be.calledOnce();
 
   });
