@@ -262,24 +262,37 @@ describe('CacheableImage', function() {
 
   });
 
-  it('setState() actions on component mount should create cancelable functions and use on unmount.', async () => {
+  it('Verify component is actually still mounted before calling setState() in componentDidMount().', async () => {
 
     // Set up mocks
     const FileSystem = require('../lib/FileSystem').default;
     FileSystem.prototype.getLocalFilePathFromUrl = jest.fn();
     FileSystem.prototype.getLocalFilePathFromUrl.mockReturnValue(new Promise((resolve) => {
-      resolve(mockData.basePath + '/react-native-image-cache-hoc/permanent/cd7d2199cd8e088cdfd9c99fc6359666adc36289.png');
+      setTimeout(() => {
+        resolve(mockData.basePath + '/react-native-image-cache-hoc/permanent/cd7d2199cd8e088cdfd9c99fc6359666adc36289.png');
+      }, 1000); // Mock 1 second delay for this async function to complete.
     }));
 
     const CacheableImage = imageCacheHoc(Image);
     const cacheableImage = new CacheableImage(mockData.mockCacheableImageProps);
 
-    // Mount and unmount
-    await cacheableImage.componentDidMount();
-    cacheableImage.cancelLocalFilePathRequest(); // Call it once manually to actually cancel local file path request
-    cacheableImage.cancelLocalFilePathRequest = sinon.spy(); // Set up a spy to make sure it gets called in componentWillUnmount().
-    await cacheableImage.componentWillUnmount();
-    cacheableImage.cancelLocalFilePathRequest.should.be.calledOnce();
+    // Ensure that if component is mounted then immediately unmounted before componentDidMount() finishes
+    // executing, setState() will not be called by an unmounted component when componentDidMount() resumes execution after
+    // completing async work.
+    // See: https://github.com/billmalarky/react-native-image-cache-hoc/issues/6#issuecomment-354490597
+    cacheableImage.setState = sinon.spy(); // Mock setState with function tracker to ensure it doesn't get called on unmounted component.
+    cacheableImage.componentDidMount();
+    cacheableImage._isMounted.should.be.true();
+    cacheableImage.componentWillUnmount();
+    cacheableImage._isMounted.should.be.false();
+
+    // Wait for componentDidMount() to complete execution.
+    await new Promise((resolve) => {
+      setTimeout(resolve, 2000);
+    });
+
+    // Ensure that setState() was not called on unmounted component.
+    cacheableImage.setState.should.not.be.called();
 
   });
 
