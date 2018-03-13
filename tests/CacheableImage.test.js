@@ -298,8 +298,6 @@ describe('CacheableImage', function() {
 
   it('#_loadImage should warn developer on error getting local file path.', () => {
 
-    // Verify source uri prop only accepts web accessible urls.
-
     const CacheableImage = imageCacheHoc(Image);
 
     const imageUrl = 'https://img.wennermedia.com/5333a62d-07db-432a-92e2-198cafa38a14-326adb1a-d8ed-4a5d-b37e-5c88883e1989.png';
@@ -327,6 +325,24 @@ describe('CacheableImage', function() {
 
     // Re-apply console.warn
     console.warn = consoleWarnCache; // eslint-disable-line no-console
+
+  });
+
+  it('componentWillReceiveProps should not throw any uncaught errors.', () => {
+
+    const CacheableImage = imageCacheHoc(Image);
+
+    const cacheableImage = new CacheableImage({ // eslint-disable-line no-unused-vars
+      source: {
+        uri: 'https://img.wennermedia.com/5333a62d-07db-432a-92e2-198cafa38a14-326adb1a-d8ed-4a5d-b37e-5c88883e1989.png'
+      }
+    });
+
+    cacheableImage.componentWillReceiveProps({ // eslint-disable-line no-unused-vars
+      source: {
+        uri: 'https://img.wennermedia.com/wallpaper1-39bd413b-cb85-4af0-9f33-3507f272e562.jpg'
+      }
+    });
 
   });
 
