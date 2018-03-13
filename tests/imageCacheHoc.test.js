@@ -184,7 +184,9 @@ describe('CacheableImage', function() {
       }
     };
 
-    const CacheableImage = imageCacheHoc(Image, optionPlaceholder);
+    const CacheableImage = imageCacheHoc(Image, {
+      defaultPlaceholder: optionPlaceholder
+    });
 
     const tree = renderer.create(
       <View style={styles.container}>

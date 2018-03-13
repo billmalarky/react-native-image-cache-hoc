@@ -62,6 +62,7 @@ exports[`CacheableImage renders correctly with placeholder option set 1`] = `
   <Image
     style={
       Object {
+        "backgroundColor": "#dc143c",
         "height": 204,
         "width": 150,
       }
