@@ -93,7 +93,7 @@ describe('CacheableImage', function() {
   it('#cacheFile static method should work as expected for cache dir files.', () => {
 
     // RNFetchBlob Mocks
-    const RNFetchBlob = require('react-native-fetch-blob');
+    const RNFetchBlob = require('rn-fetch-blob');
 
     // Mock that file does not exist on local fs.
     RNFetchBlob.fs.exists
@@ -125,7 +125,7 @@ describe('CacheableImage', function() {
   it('#cacheFile static method should work as expected for permanent dir files.', () => {
 
     // RNFetchBlob Mocks
-    const RNFetchBlob = require('react-native-fetch-blob');
+    const RNFetchBlob = require('rn-fetch-blob');
 
     // Mock that file does not exist on local fs.
     RNFetchBlob.fs.exists
@@ -157,7 +157,7 @@ describe('CacheableImage', function() {
   it('#flush static method should work as expected.', () => {
 
     // RNFetchBlob Mocks
-    const RNFetchBlob = require('react-native-fetch-blob');
+    const RNFetchBlob = require('rn-fetch-blob');
 
     // Mock unlink to always be true.
     RNFetchBlob.fs.unlink
