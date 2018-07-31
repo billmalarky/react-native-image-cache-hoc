@@ -19,7 +19,7 @@ jest.mock('react-native', () => {
 
 });
 
-jest.mock('react-native-fetch-blob', () => {
+jest.mock('rn-fetch-blob', () => {
 
   const { mockData } = require('./mockData');
 

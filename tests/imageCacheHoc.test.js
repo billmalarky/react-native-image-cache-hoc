@@ -25,7 +25,7 @@ describe('CacheableImage', function() {
   it('renders correctly', () => {
 
     //Mock values for local/remote file request logic.
-    const RNFetchBlob = require('react-native-fetch-blob');
+    const RNFetchBlob = require('rn-fetch-blob');
     RNFetchBlob.fs.exists
       .mockReturnValueOnce(false) // mock not exist in local permanent dir
       .mockReturnValueOnce(false) // mock not exist in local cache dir
@@ -77,7 +77,7 @@ describe('CacheableImage', function() {
   it('renders correctly with placeholder prop set', () => {
 
     //Mock values for local/remote file request logic.
-    const RNFetchBlob = require('react-native-fetch-blob');
+    const RNFetchBlob = require('rn-fetch-blob');
     RNFetchBlob.fs.exists
       .mockReturnValueOnce(false) // mock not exist in local permanent dir
       .mockReturnValueOnce(false) // mock not exist in local cache dir
@@ -141,7 +141,7 @@ describe('CacheableImage', function() {
   it('renders correctly with placeholder option set', () => {
 
     //Mock values for local/remote file request logic.
-    const RNFetchBlob = require('react-native-fetch-blob');
+    const RNFetchBlob = require('rn-fetch-blob');
     RNFetchBlob.fs.exists
       .mockReturnValueOnce(false) // mock not exist in local permanent dir
       .mockReturnValueOnce(false) // mock not exist in local cache dir
