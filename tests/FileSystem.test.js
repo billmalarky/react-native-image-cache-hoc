@@ -74,7 +74,7 @@ describe('lib/FileSystem', function() {
 
   it('#exists mocked as true.', () => {
 
-    const RNFetchBlob = require('rn-fetch-blob');
+    const RNFetchBlob = require('react-native-fetch-blob');
     RNFetchBlob.fs.exists
       .mockReturnValue(true);
 
@@ -191,7 +191,7 @@ describe('lib/FileSystem', function() {
 
   it('#getLocalFilePathFromUrl should return local filepath if it exists on local fs in permanent dir.', () => {
 
-    const RNFetchBlob = require('rn-fetch-blob');
+    const RNFetchBlob = require('react-native-fetch-blob');
     RNFetchBlob.fs.exists
       .mockReturnValueOnce(true) // mock exist in local permanent dir
       .mockReturnValue(true);
@@ -207,7 +207,7 @@ describe('lib/FileSystem', function() {
 
   it('#getLocalFilePathFromUrl should return local filepath if it exists on local fs in cache dir.', () => {
 
-    const RNFetchBlob = require('rn-fetch-blob');
+    const RNFetchBlob = require('react-native-fetch-blob');
     RNFetchBlob.fs.exists
       .mockReturnValueOnce(false) // mock not exist in local permanent dir
       .mockReturnValueOnce(true) // mock exist in local cache dir
@@ -224,7 +224,7 @@ describe('lib/FileSystem', function() {
 
   it('#getLocalFilePathFromUrl should download file and write to disk (default to cache dir) if it does not exist on local fs.', () => {
 
-    const RNFetchBlob = require('rn-fetch-blob');
+    const RNFetchBlob = require('react-native-fetch-blob');
     RNFetchBlob.fs.exists
       .mockReturnValueOnce(false) // mock not exist in local permanent dir
       .mockReturnValueOnce(false) // mock not exist in local cache dir
@@ -268,7 +268,7 @@ describe('lib/FileSystem', function() {
 
     const fileSystem = FileSystemFactory();
 
-    const RNFetchBlob = require('rn-fetch-blob');
+    const RNFetchBlob = require('react-native-fetch-blob');
     RNFetchBlob.fetch
       .mockReturnValue({
         path: () => {
@@ -291,7 +291,7 @@ describe('lib/FileSystem', function() {
 
     const fileSystem = FileSystemFactory();
 
-    const RNFetchBlob = require('rn-fetch-blob');
+    const RNFetchBlob = require('react-native-fetch-blob');
     RNFetchBlob.fetch
       .mockReturnValue({
         path: () => {
@@ -318,7 +318,7 @@ describe('lib/FileSystem', function() {
 
     const fileSystem = FileSystemFactory();
 
-    const RNFetchBlob = require('rn-fetch-blob');
+    const RNFetchBlob = require('react-native-fetch-blob');
     RNFetchBlob.fetch
       .mockReturnValue({
         path: () => {
@@ -345,7 +345,7 @@ describe('lib/FileSystem', function() {
 
     const fileSystem = FileSystemFactory();
 
-    const RNFetchBlob = require('rn-fetch-blob');
+    const RNFetchBlob = require('react-native-fetch-blob');
     RNFetchBlob.fetch
       .mockReturnValue({
         path: () => {
@@ -398,7 +398,7 @@ describe('lib/FileSystem', function() {
   it('#unlink should work as expected for valid paths.', () => {
 
     // RNFetchBlob Mocks
-    const RNFetchBlob = require('rn-fetch-blob');
+    const RNFetchBlob = require('react-native-fetch-blob');
 
     // Mock unlink to be true.
     RNFetchBlob.fs.unlink
