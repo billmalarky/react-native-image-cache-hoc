@@ -221,6 +221,8 @@ The CacheableImage class returned by React Native Image Cache HOC includes a cou
 
 Use this method if you need to download a file to the local filesystem prior to rendering \<CacheableImage\> for some reason (perhaps to pre-warm the local cache). If calling this method repeatedly to cache a long list of files, be sure to use a queue and limit concurrency so your app performance does not suffer.
 
+**Note**: if you've set a custom `fileDirName` in your options, this will _not_ be used by `CacheableImage.cacheFile`. This means that you may end up downloading the image twice.
+
 ```js
 import imageCacheHoc from 'react-native-image-cache-hoc';
 const CacheableImage = imageCacheHoc(Image);
