@@ -50,12 +50,14 @@
       "./tests/config.js"
     ]
   },
+  "peerDependencies": {
+    "rn-fetch-blob": "0.11.2"
+  },
   "dependencies": {
     "buffer": "^5.0.8",
     "crypto-js": "^3.1.9-1",
     "path": "^0.12.7",
     "prop-types": "^15.6.0",
-    "rn-fetch-blob": "0.10.13",
     "react-native-uuid": "^1.4.9",
     "traverse": "^0.6.6",
     "url-parse": "^1.2.0",
