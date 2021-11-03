@@ -59,6 +59,6 @@
     "react-native-uuid": "^1.4.9",
     "traverse": "^0.6.6",
     "url-parse": "^1.2.0",
-    "validator": "^9.0.0"
+    "validator": "^13.7.0"
   }
 }
