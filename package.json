@@ -51,7 +51,7 @@
     ]
   },
   "peerDependencies": {
-    "react-native-fs": "^2.14.1"
+    "@dr.pogodin/react-native-fs": "^2.24.1"
   },
   "dependencies": {
     "buffer": "^5.0.8",
